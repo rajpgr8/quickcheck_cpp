@@ -20,3 +20,47 @@ func_auth_access(Container&& c, Index i)
   return std::forward<Container>(c)[i];
 }
 ------------------------------------------
+
+decltype(auto) f1()
+{
+  int x=0;
+  ...
+  return x; //decltype(x) is int so f1() return int
+}
+
+decltype(auto) f2()
+{
+  int x=0;
+  ...
+  return (x); //decltype((x)) is int& so f1() return int& -> undefined behaviour
+}
+
+---------------------------------------
+//To know abot type:
+
+#include <iostream>
+#include <typeinfo>
+
+template<typename T>
+class TD;
+
+int main()
+{
+    const int i = 100;
+    auto x = i;
+    auto y = &x;
+    
+    //Method 1
+    TD<decltype(x)> tx;
+    TD<decltype(y)> ty;
+    
+    //Method 2
+    std::cout << typeid(x).name() << std::endl;
+    std::cout << typeid(y).name() << std::endl;
+}
+
+
+
+
+
+
