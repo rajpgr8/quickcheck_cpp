@@ -1,4 +1,5 @@
 #//C++14
+
 template<typename Container, typename Index>
 decltype(auto)
 func_auth_access(Container&& c, Index i)
@@ -9,6 +10,7 @@ func_auth_access(Container&& c, Index i)
 
 
 #//C++11 Equivelent
+
 template<typename Container, typename Index>
 auto
 func_auth_access(Container&& c, Index i)
