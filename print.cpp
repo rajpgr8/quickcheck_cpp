@@ -43,20 +43,16 @@ void print()
     std::cout << "\n";
 
     std::map<int, int> m = {{1,2},{3,4},{4,5}};
-    for (const auto& e : m) std::cout << e.first << ":" << e.second << " ";
+    for (const auto& [key, value] : m) std::cout << key << ":" << value << " ";
     std::cout << "\n";
     
     //map with std::pair
-    std::map<int, int> m1 = {{1,2},{3,4},{4,5}};
-    for (const auto& e : m1) 
-    {
-        const auto& p = std::make_pair(e.first, e.second);
-        std::cout << p.first << ":" << p.second << " ";
-    }
+    std::map<int, std::pair<char, int>> m1 = {{100, std::make_pair<char, int>('A', 1)},{100, std::make_pair<char, int>('B', 2)},{300, std::make_pair<char, int>('C', 3)}};
+    for (const auto& [key, value] : m1) std::cout << key << ":" << value.first << ":" << value.second << " ";
     std::cout << "\n";
     
     std::unordered_map<int, int> um = {{1,2},{3,4},{4,5}};
-    for (const auto& e : um) std::cout << e.first << ":" << e.second << " ";
+    for (const auto& [key, value] : um) std::cout << key << ":" << value << " ";
     std::cout << "\n";    
     
     std::priority_queue<int> q;
@@ -72,9 +68,7 @@ void print()
 
 int main()
 {
-    std::vector<std::string> vec = {
-        "My", "GCC", "Version", "is:", __VERSION__, "!" 
-    };
+    std::vector<std::string> vec = {"My", "GCC", "Version", "is:", __VERSION__, "!" };
     std::cout << vec << std::endl;
     
     //Print all the modern data structure
