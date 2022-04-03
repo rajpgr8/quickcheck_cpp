@@ -1,52 +1,55 @@
 #include <iostream>
-#include <thread>
-#include <mutex>
-#include <vector>
 #include <condition_variable>
-using namespace std;
+#include <mutex>
+#include <thread>
+#include <queue>
 
-int count;
-mutex mutObj;
-vector<int> que;
-condition_variable CondVar;
+std::mutex mutex_;
+std::condition_variable condVar;
+std::queue<int> queue;
+int item = 0;
 
-int fun1(){
-	
-	std::this_thread::sleep_for(std::chrono::seconds(2));
-	while(count < 100){
-		cout<<"Fun1: count: "<<count<<endl;
-		count++;
-		unique_lock<mutex> lock(mutObj);
-		que.push_back(count);
-		// if(count == 50){
-		//  	std::this_thread::sleep_for(std::chrono::seconds(5));}
-		// CondVar.notify_all();
-	}
+void func1(){
+    std::cout << "Producer Start\n";
+    while (item < 50) 
+    {
+        std::unique_lock<std::mutex> lck(mutex_);
+        condVar.wait(lck, [] { return queue.size() == 0 ; } );
+         
+        item++;
+        queue.push(item);
+        
+       mutex_.unlock();
+       condVar.notify_one();
+    }
+
+       
 }
 
-int fun2(){
-	unique_lock<mutex> lock1(mutObj);
-	while(count < 100){
-		// if((que.size() == 0)){
-		// 	CondVar.wait(lock1);
-		// }
-		cout<<"fun2: que size:  "<< que.size()<<endl;
-		for(auto itr : que){
-			if(que.size() > 0){
-				cout<<"Count: "<<itr<<endl;
-				que.pop_back();
-			}
-		}
-	}
+void func2(){
+    std::cout << "Consumer Start\n";
+    while (item < 50) 
+    {
+        std::unique_lock<std::mutex> lck(mutex_);
+        condVar.wait(lck, [] { return !queue.empty(); } );    
+        
+        while (!queue.empty()) {
+            auto item = queue.front(); 
+            queue.pop();
+            std::cout << item << "\n";
+        }
+        mutex_.unlock();
+       condVar.notify_one();
+    }
 }
 
 int main(){
-	cout<<"Inside Main()"<<endl;
-    std::thread t1(fun1);
-    std::thread t2(fun2);
-	cout <<"Joining to main()"<<endl;
-    t1.join();
-    t2.join();
+  std::thread t1(func1);
+  std::thread t2(func2);
 
-    return 0;
+  t1.join();
+  t2.join();
+
+  std::cout << std::endl;
+  
 }
