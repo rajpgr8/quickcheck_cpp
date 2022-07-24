@@ -42,7 +42,10 @@ void print()
     for (const auto& e : us) std::cout << e << " ";
     std::cout << "\n";
 
-    std::map<int, int> m = {{1,2},{3,4},{4,5}};
+    std::map<int, int> m = {{1,2},
+                            {3,4},
+                            {4,5}
+                           };
     for (const auto& [key, value] : m) std::cout << key << ":" << value << " ";
     std::cout << "\n";
     
@@ -60,7 +63,10 @@ void print()
                                                            };
     for (const auto& [key, value] : m2) std::cout << key << ":" << std::get<0>(value) << ":" << std::get<1>(value) << ":" << std::get<2>(value) << " \n";
     
-    std::unordered_map<int, int> um = {{1,2},{3,4},{4,5}};
+    std::unordered_map<int, int> um = {{1,2},
+                                       {3,4},
+                                       {4,5}
+                                      };
     for (const auto& [key, value] : um) std::cout << key << ":" << value << " ";
     std::cout << "\n";    
     
