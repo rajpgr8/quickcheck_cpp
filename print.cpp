@@ -47,9 +47,18 @@ void print()
     std::cout << "\n";
     
     //map with std::pair
-    std::map<int, std::pair<char, int>> m1 = {{100, std::make_pair<char, int>('A', 1)},{100, std::make_pair<char, int>('B', 2)},{300, std::make_pair<char, int>('C', 3)}};
-    for (const auto& [key, value] : m1) std::cout << key << ":" << value.first << ":" << value.second << " ";
-    std::cout << "\n";
+    std::map<int, std::pair<char, int>> m1 = {{100, {'A', 1}},
+                                              {200, {'B', 2}},
+                                              {300, {'C', 3}}
+                                             };
+    for (const auto& [key, value] : m1) std::cout << key << ":" << value.first << ":" << value.second << "\n";
+    
+    //map with std::tuple
+    std::map<int, std::tuple<char, int, std::string>> m2 = { {100, {'A', 1, "first"}},
+                                                             {200, {'B', 2, "second"}},
+                                                             {300, {'C', 3, "third"}}
+                                                           };
+    for (const auto& [key, value] : m2) std::cout << key << ":" << std::get<0>(value) << ":" << std::get<1>(value) << ":" << std::get<2>(value) << " \n";
     
     std::unordered_map<int, int> um = {{1,2},{3,4},{4,5}};
     for (const auto& [key, value] : um) std::cout << key << ":" << value << " ";
